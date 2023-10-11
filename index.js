@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 // setting up the port by default port is 80 
 const port =5000;
-
+// to use the laouts we downloaded the lib called as express ejs payouts
 // use ejs as template engine 
 app.set('view engine', 'ejs');
 
