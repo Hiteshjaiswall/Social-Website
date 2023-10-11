@@ -5,6 +5,9 @@ const app = express();
 // setting up the port by default port is 80 
 const port =5000;
 // to use the laouts we downloaded the lib called as express ejs payouts
+const expressLayouts = require('express-ejs-layouts');
+// to use the layouts we need to make it before the routed so the website knows we are using the layouts 
+app.use(expressLayouts);
 // use ejs as template engine 
 app.set('view engine', 'ejs');
 
