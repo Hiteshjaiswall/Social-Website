@@ -8,7 +8,8 @@ const port =5000;
 // use ejs as template engine 
 app.set('view engine', 'ejs');
 
-// now to set 
+// now to set up the ejs 
+app.set('view', './views');
 
 // use express router 
 app.use('/', require('./routes/index'));
