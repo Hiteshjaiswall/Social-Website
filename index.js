@@ -9,7 +9,7 @@ const port =5000;
 app.set('view engine', 'ejs');
 
 // now to set up the ejs 
-app.set('view', './views');
+app.set('views', './views');
 
 // use express router 
 app.use('/', require('./routes/index'));
