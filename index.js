@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 // setting up the port by default port is 80 
 const port =5000;
+// now we are going to set us our stativ file now e have to define the folde in which there are our static files
+app.use(express.static('./assets'));
 // to use the laouts we downloaded the lib called as express ejs payouts
 const expressLayouts = require('express-ejs-layouts');
 // to use the layouts we need to make it before the routed so the website knows we are using the layouts 
