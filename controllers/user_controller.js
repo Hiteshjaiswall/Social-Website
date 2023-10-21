@@ -1,10 +1,32 @@
 //import model 
 const User = require('../models/user');
-module.exports.profile = function (req, res) {
+module.exports.profile = async function (req, res) {
+    try{
     // return res.end("<h1>User Profile</h1>");
-    return res.render('user_profile.ejs', {
-        title: "soical website"
-    })
+    // return res.render('user_profile.ejs', {
+    //     title: "soical website"
+    // })
+    // to suthentiacte the profile page we need to use the cookies int heta order
+    if(req.cookies.user_id){
+    const user=await User.findById(req.cookies.user_id);
+    if(user){
+        return res.render('user_profile.ejs',{
+            title:"Social",
+            name:user.name
+        })
+    }
+    else{
+        console.log("inside");
+        return res.redirect('/users/sign-up');
+    }
+    }else{
+        console.log("inside sign in ");
+        return res.redirect('/users/sign-in');
+    }
+}
+catch(err){
+    console.log("erron in rendering profile page", err);
+}
 }
 // rendering the sign up page 
 module.exports.signup = function (req, res) {
@@ -44,6 +66,34 @@ module.exports.create = async function (req, res) {
 };
 
 // for the sign in 
-module.exports.createSession = function (req, res) {
+module.exports.createSession = async function (req, res) {
+    // find the user done
 
+    //handel the user found done 
+
+    // handel passrord that dont match 
+
+    // handel session creation
+
+    // handel user not found 
+
+    // lets find the user 
+try{
+    const user =await User.findOne({email: req.body.email});
+    if(!user){
+        return res.redirct("back");
+    }
+    else{
+        // check for password 
+        if(user.password != req.body.password){
+        return res.status(401).send("Wrong username/password");
+        }else{
+            res.cookie('user_id', user.id);
+            return res.redirect("/users/profile");
+        }
+    }
+}
+catch(err){
+console.log("error in sigining in ", err);
+}
 }
