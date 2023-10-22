@@ -78,22 +78,24 @@ module.exports.createSession = async function (req, res) {
     // handel user not found 
 
     // lets find the user 
-try{
-    const user =await User.findOne({email: req.body.email});
-    if(!user){
-        return res.redirct("back");
-    }
-    else{
-        // check for password 
-        if(user.password != req.body.password){
-        return res.status(401).send("Wrong username/password");
-        }else{
-            res.cookie('user_id', user.id);
-            return res.redirect("/users/profile");
-        }
-    }
-}
-catch(err){
-console.log("error in sigining in ", err);
-}
+// try{
+//     const user =await User.findOne({email: req.body.email});
+//     if(!user){
+//         return res.redirct("back");
+//     }
+//     else{
+//         // check for password 
+//         if(user.password != req.body.password){
+//         return res.status(401).send("Wrong username/password");
+//         }else{
+//             res.cookie('user_id', user.id);
+//             return res.redirect("/users/profile");
+//         }
+//     }
+// }
+// catch(err){
+// console.log("error in sigining in ", err);
+// }
+    // all the suthentication alreaady happened in the passport js 
+    return res.redirect('/');
 }

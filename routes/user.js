@@ -1,5 +1,5 @@
 const express = require('express');
-
+const passport=require("passport");
 // now to seprate routes and controller since the work togeathe we need to force it by using the router 
 
 const router = express.Router();
@@ -9,5 +9,10 @@ router.get('/profile', userController.profile);
 router.get('/sign-up', userController.signup);
 router.get('/sign-in', userController.signin);
 router.post('/create', userController.create);
-router.post('/create-session', userController.createSession);
+//  usig passport as a middelware to authenticate 
+//  done send fail
+router.post('/create-session', passport.authenticate(
+    'local',
+    {failureRedirect:'/users/sign-in',}
+) ,userController.createSession);
 module.exports=router;

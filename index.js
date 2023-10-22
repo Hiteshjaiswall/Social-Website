@@ -8,6 +8,12 @@ const cookieParser=require("cookie-parser");
 const port =5000;
 // using database
 const db = require('./config/mongoose');
+// setiing up the session to use passport 
+const session =require("express-session");
+// require passport
+const passport=require("passport");
+// require passport local
+const passportlocal=require("./config/passport-local-stratergy");
 // reading the post request
 app.use(express.urlencoded());
 // using the cookie parser
@@ -22,6 +28,27 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 // now to set up the ejs 
 app.set('views', './views');
+// setting up the session cookie 
+app.use(session( {
+    name:'social',
+    // this ia a secret key for encription and all 
+    secret:'something',
+    // 
+    saveUnintilised:false,
+    // 
+    resave:false,
+    // need to give a age to the cookie before it expired 
+    cookie :{
+        maxAge : (1000 * 60 * 100)
+    }
+}));
+
+// next step to use session 
+//  tell the app to use passport
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // use express router 
 app.use('/', require('./routes/index'));
 //making the aapp listen 
