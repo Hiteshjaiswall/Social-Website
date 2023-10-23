@@ -14,6 +14,8 @@ const session =require("express-session");
 const passport=require("passport");
 // require passport local
 const passportlocal=require("./config/passport-local-stratergy");
+// requiring mongo stroe t stroe the current session sos that out local user dont get logges out of my server
+const MongoStore=require('connect-mongo');
 // reading the post request
 app.use(express.urlencoded());
 // using the cookie parser
@@ -29,18 +31,25 @@ app.set('view engine', 'ejs');
 // now to set up the ejs 
 app.set('views', './views');
 // setting up the session cookie 
-app.use(session( {
-    name:'social',
-    // this ia a secret key for encription and all 
-    secret:'something',
-    // 
-    saveUnintilised:false,
-    // 
-    resave:false,
-    // need to give a age to the cookie before it expired 
-    cookie :{
-        maxAge : (1000 * 60 * 100)
-    }
+// mongo store is used to store ht session cookie in hte db 
+// h0w to use this 
+// Create a new MongoStore instance
+
+// Use the 'mongoStore' instance in the session configuration
+app.use(session({
+    name: 'social',
+    secret: 'something',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: 1000 * 60 * 100,
+    },
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://0.0.0.0/Social_app', // Assuming 'db' is your MongoDB connection
+        autoRemove: 'disabled',
+    }, function (err) {
+        console.log(err || 'connect mongo db setup ok');
+    }), // Use the 'mongoStore' instance here
 }));
 
 // next step to use session 
@@ -48,7 +57,7 @@ app.use(session( {
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(passport.setAuthenticateUser);
 // use express router 
 app.use('/', require('./routes/index'));
 //making the aapp listen 

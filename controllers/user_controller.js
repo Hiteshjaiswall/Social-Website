@@ -1,41 +1,47 @@
 //import model 
 const User = require('../models/user');
 module.exports.profile = async function (req, res) {
-    try{
+    // try{
     // return res.end("<h1>User Profile</h1>");
-    // return res.render('user_profile.ejs', {
-    //     title: "soical website"
-    // })
+    return res.render('user_profile.ejs', {
+        title: "soical website",
+    })
     // to suthentiacte the profile page we need to use the cookies int heta order
-    if(req.cookies.user_id){
-    const user=await User.findById(req.cookies.user_id);
-    if(user){
-        return res.render('user_profile.ejs',{
-            title:"Social",
-            name:user.name
-        })
-    }
-    else{
-        console.log("inside");
-        return res.redirect('/users/sign-up');
-    }
-    }else{
-        console.log("inside sign in ");
-        return res.redirect('/users/sign-in');
-    }
-}
-catch(err){
-    console.log("erron in rendering profile page", err);
-}
+//     if(req.cookies.user_id){
+//     const user=await User.findById(req.cookies.user_id);
+//     if(user){
+//         return res.render('user_profile.ejs',{
+//             title:"Social",
+//             name:user.name
+//         })
+//     }
+//     else{
+//         console.log("inside");
+//         return res.redirect('/users/sign-up');
+//     }
+//     }else{
+//         console.log("inside sign in ");
+//         return res.redirect('/users/sign-in');
+//     }
+// }
+// catch(err){
+//     console.log("erron in rendering profile page", err);
+// }
 }
 // rendering the sign up page 
 module.exports.signup = function (req, res) {
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     return res.render("user_signup", {
         title: "Social | Sign-up"
     })
 }
 // rendering the sign in page
 module.exports.signin = function (req, res) {
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     return res.render("user_signin", {
         title: "Social | Sign-in"
     })
@@ -98,4 +104,14 @@ module.exports.createSession = async function (req, res) {
 // }
     // all the suthentication alreaady happened in the passport js 
     return res.redirect('/');
+}
+
+
+module.exports.destroySession = function(req, res){
+//  now before redirecting we need ot log out of the current session so to do that
+// passport will do it 
+req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
 }
