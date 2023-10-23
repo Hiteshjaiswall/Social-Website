@@ -16,6 +16,8 @@ const passport=require("passport");
 const passportlocal=require("./config/passport-local-stratergy");
 // requiring mongo stroe t stroe the current session sos that out local user dont get logges out of my server
 const MongoStore=require('connect-mongo');
+// require sass
+const sassMiddleware=require("node-sass-middleware");
 // reading the post request
 app.use(express.urlencoded());
 // using the cookie parser
@@ -54,7 +56,15 @@ app.use(session({
 
 // next step to use session 
 //  tell the app to use passport
-
+app.use(sassMiddleware({
+    /* Options */
+    src: "./assets/scss",
+    dest: './assets/css',
+    debug: true,
+    outputStyle: 'extended',
+    // where do i look out for css file
+    prefix:  '/css'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticateUser);
