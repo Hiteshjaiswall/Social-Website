@@ -13,5 +13,6 @@ console.log('router loaded');
 router.get('/', homeController.home );
 // new router how to tell to use other routers
 router.use('/users', require('./user'));
+router.use('/posts', require('./post'));
 // now since we export this we need to tell the app to use it remember we used to say app.use
 module.exports=router;
