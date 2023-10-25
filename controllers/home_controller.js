@@ -23,7 +23,15 @@ module.exports.home=function(req, res){
 
     //  now we will populate the user 
 
-    Post.find({}).populate('user')
+    Post.find({})
+    .populate('user')
+    //  populate multiple models 
+    .populate({
+        path: 'comments',
+        populate:{
+            path:'user'
+        }
+    })
     .then(posts=>{
         return res.render('home.ejs', {
             title:"social",
