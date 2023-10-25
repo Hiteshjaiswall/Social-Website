@@ -18,6 +18,10 @@ const passportlocal=require("./config/passport-local-stratergy");
 const MongoStore=require('connect-mongo');
 // require sass
 const sassMiddleware=require("node-sass-middleware");
+//  requiring flash to show flash message
+var flash = require('connect-flash');
+// requiring our middleware that i made
+const customMware=require('./config/middleware');
 // reading the post request
 app.use(express.urlencoded());
 // using the cookie parser
@@ -68,6 +72,9 @@ app.use(sassMiddleware({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticateUser);
+app.use(flash());
+//  usign custom mware
+app.use(customMware.setFlash);
 // use express router 
 app.use('/', require('./routes/index'));
 //making the aapp listen 

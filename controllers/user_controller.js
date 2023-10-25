@@ -61,6 +61,7 @@ module.exports.signup = function (req, res) {
 // rendering the sign in page
 module.exports.signin = function (req, res) {
     if(req.isAuthenticated()){
+        
         return res.redirect('/users/profile');
     }
     return res.render("user_signin", {
@@ -124,6 +125,7 @@ module.exports.createSession = async function (req, res) {
 // console.log("error in sigining in ", err);
 // }
     // all the suthentication alreaady happened in the passport js 
+    req.flash('success', 'Logged in successfully');
     return res.redirect('/');
 }
 
@@ -131,8 +133,10 @@ module.exports.createSession = async function (req, res) {
 module.exports.destroySession = function(req, res){
 //  now before redirecting we need ot log out of the current session so to do that
 // passport will do it 
+
 req.logout(function(err) {
     if (err) { return next(err); }
+    req.flash('success', 'Logged out successfully');
     res.redirect('/');
   });
 }
