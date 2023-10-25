@@ -74,6 +74,7 @@ module.exports.create = async function (req, res) {
         // Check if the password and the confirm password match; if not, redirect back to the user
         if (req.body.password != req.body.confirm_password) {
             console.log("incorrect password");
+            req.flash('error', 'password do not match');
             return res.redirect('back');
         }
         // Find user by email
@@ -84,6 +85,7 @@ module.exports.create = async function (req, res) {
             User.create(req.body);
             return res.redirect('/users/sign-in');
         } else {
+            req.flash('error', 'user already exist');
             console.log("inside else");
             return res.redirect('back');
         }
