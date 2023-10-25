@@ -3,8 +3,12 @@ const User = require('../models/user');
 module.exports.profile = async function (req, res) {
     // try{
     // return res.end("<h1>User Profile</h1>");
-    return res.render('user_profile.ejs', {
-        title: "soical website",
+    User.findById(req.params.id)
+    .then(user=>{
+        return res.render('user_profile.ejs', {
+            title: "soical website",
+            profile_user:user
+        })
     })
     // to suthentiacte the profile page we need to use the cookies int heta order
 //     if(req.cookies.user_id){
@@ -27,6 +31,23 @@ module.exports.profile = async function (req, res) {
 // catch(err){
 //     console.log("erron in rendering profile page", err);
 // }
+}
+
+
+//  for update
+module.exports.update=function(req, res){
+    if(req.user.id == req.params.id){
+    User.findByIdAndUpdate(req.params.id, 
+        {
+            name:req.body.name
+        }
+    )
+    .then(user=>{
+        return res.redirect('back');
+    })
+    }else{
+        return res.status(401).send("unautherise");
+    }
 }
 // rendering the sign up page 
 module.exports.signup = function (req, res) {

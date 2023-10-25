@@ -4,6 +4,7 @@
 //  require post
 
 const Post=require('../models/post');
+const User=require('../models/user');
 
 module.exports.home=function(req, res){
 
@@ -33,10 +34,14 @@ module.exports.home=function(req, res){
         }
     })
     .then(posts=>{
-        return res.render('home.ejs', {
-            title:"social",
-            posts:posts
-        });
+        User.find({})
+        .then(user=>{
+            return res.render('home.ejs', {
+                title:"social",
+                posts:posts,
+                all_users:user
+            });
+        })
     })
     .catch(err=>{
         console.log("error in rendering the post", err);
