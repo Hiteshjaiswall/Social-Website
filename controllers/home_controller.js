@@ -24,7 +24,7 @@ module.exports.home=function(req, res){
 
     //  now we will populate the user 
 
-    Post.find({})
+    Post.find({}).sort('-createdAt')
     .populate('user')
     //  populate multiple models 
     .populate({
