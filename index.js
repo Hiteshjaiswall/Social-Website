@@ -22,6 +22,7 @@ const sassMiddleware=require("node-sass-middleware");
 var flash = require('connect-flash');
 // requiring our middleware that i made
 const customMware=require('./config/middleware');
+const passportGoogle=require('./config/passport-google-oauth');
 // reading the post request
 app.use(express.urlencoded());
 // using the cookie parser

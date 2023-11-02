@@ -145,7 +145,7 @@ module.exports.createSession = async function (req, res) {
 // catch(err){
 // console.log("error in sigining in ", err);
 // }
-    // all the suthentication alreaady happened in the passport js 
+    // all the authentication alreaady happened in the passport js 
     req.flash('success', 'Logged in ');
     return res.redirect('/');
 }
