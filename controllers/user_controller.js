@@ -1,5 +1,7 @@
 //import model 
 const User = require('../models/user');
+const fs=require('fs');
+const path =require('path');
 module.exports.profile = async function (req, res) {
     // try{
     // return res.end("<h1>User Profile</h1>");
@@ -35,16 +37,32 @@ module.exports.profile = async function (req, res) {
 
 
 //  for update
-module.exports.update=function(req, res){
+module.exports.update= async function(req, res){
     if(req.user.id == req.params.id){
-    User.findByIdAndUpdate(req.params.id, 
-        {
-            name:req.body.name
+    
+    try{
+        let  user=await User.findById(req.params.id);
+        User.uploadedAvatar(req, res, function(err){
+            if(err){
+                console.log("multer Error::::", err);
+            return res.redirect('back');
+            }
+        user.name=req.body.name;
+        user.bio=req.body.bio;
+        if(req.file){
+            if(user.avatar){
+            fs.unlinkSync(path.join(__dirname, '../', user.avatar));
+            }
+            // this is saving the path of the uploaded file
+            user.avatar=User.avatarPath + '/' + req.file.filename;
         }
-    )
-    .then(user=>{
+        user.save();
         return res.redirect('back');
-    })
+        })
+    }
+    catch(err){
+    console.log("error", err)
+    }
     }else{
         return res.status(401).send("unautherise");
     }
@@ -52,6 +70,7 @@ module.exports.update=function(req, res){
 // rendering the sign up page 
 module.exports.signup = function (req, res) {
     if(req.isAuthenticated()){
+        req.flash('sucess', 'already exist');
         return res.redirect('/users/profile');
     }
     return res.render("user_signup", {
@@ -61,7 +80,7 @@ module.exports.signup = function (req, res) {
 // rendering the sign in page
 module.exports.signin = function (req, res) {
     if(req.isAuthenticated()){
-        
+        req.flash('sucess', 'logged in');
         return res.redirect('/users/profile');
     }
     return res.render("user_signin", {
@@ -127,7 +146,7 @@ module.exports.createSession = async function (req, res) {
 // console.log("error in sigining in ", err);
 // }
     // all the suthentication alreaady happened in the passport js 
-    req.flash('success', 'Logged in successfully');
+    req.flash('success', 'Logged in ');
     return res.redirect('/');
 }
 
@@ -135,10 +154,9 @@ module.exports.createSession = async function (req, res) {
 module.exports.destroySession = function(req, res){
 //  now before redirecting we need ot log out of the current session so to do that
 // passport will do it 
-
 req.logout(function(err) {
     if (err) { return next(err); }
-    req.flash('success', 'Logged out successfully');
+    req.flash('error', 'Logged out');
     res.redirect('/');
   });
 }

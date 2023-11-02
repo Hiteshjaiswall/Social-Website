@@ -69,6 +69,8 @@ app.use(sassMiddleware({
     // where do i look out for css file
     prefix:  '/css'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
 }));
+//  make the upload path available to the browser
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticateUser);
