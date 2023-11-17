@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/c348d4c177.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <!-- we need to do ajax to send request our web page is refreshing we dont need that so we are using ajax -->
+    <!--  so we need to include jquery -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <title><%=title%></title>
+</head>
+<body id="layout-body">
+    <!-- if u can see ht header part an dthe footer part is common in every ejs file now we can put it in a common file -->
+    
+    <!-- <header>
+        page header
+    </header> -->
+    <%- include('_header');%>
+    <!--  this is for flash now im usign noty so need to put in comments -->
+    <!-- <%if(flash.success && flash.success.length >0 ){%>
+    
+        <h1><%= flash.success %></h1>
+        <%}%> -->
+
+        
+        <%- body %>
+        
+    <!-- <footer> 
+        page footer
+    </footer> -->
+    <%- include('_footer');%>
+    <script>
+        <% if(flash.success && flash.success.length>0) {%>
+            
+            new Noty({
+                theme:"relax",
+            text:  "<%= flash.success %>",
+            type: 'success',
+            layout: 'topRight',
+            timeout: 1500 ,
+            }).show();
+            <%}else if(flash.error && flash.error.length>0) {%>
+                new Noty({
+                theme:"relax",
+            text:  "<%= flash.error %>",
+            type: 'error',
+            layout: 'topRight',
+            timeout: 1500 ,
+            }).show();
+                <%}%>
+    </script>
+    <script>
+        
+        let noty =function(type , message){
+        if(type=='success'){
+            new Noty({
+                theme:"relax",
+            text:  message,
+            type: 'success',
+            layout: 'topRight',
+            timeout: 1500 ,
+            }).show();
+        }else if(type=="error"){
+            new Noty({
+                theme:"relax",
+            text:  message,
+            type: 'error',
+            layout: 'topRight',
+            timeout: 1500 ,
+            }).show();
+        }
+        }
+                </script>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+    <link rel="stylesheet" href="/css/profile.css">
+    <div class="profile-main">
+        <div id="profile-feed">
+            <div>
+                <img src="<%=user.avatar%>" id="profile-img">
+                <p><%= user.bio %></p>
+            </div>
+    <!-- it is because we set up the user in local  -->
+    <%if(user.id == profile_user.id){%>
+        <!--  encripteed is long type of data which means images n all  -->
+    <form action="/users/update/<%= profile_user.id%>" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Your name" value="<%= profile_user.name %>" required>
+        <input type="text" name="bio" placeholder="change your bio">
+        <!--  intput type ois file  -->
+        <input type="file" name="avatar" placeholder="profile Picture">
+        <input type="submit" value="Update" id="button">
+    </form>
+        <%}else{%>
+            <h2><%=profile_user.name %>  </h2>
+        
+            <%}%>
+    </div>
+</div>

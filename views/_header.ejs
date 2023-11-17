@@ -1,0 +1,14 @@
+<header>
+    <div class="topnav">
+        <p class="active" href="#">SOCIAL</p>
+        <a href="/">HOME</a>
+        <% if(locals.user){ %>
+        <a href="/users/sign-out">SIGNOUT</a>
+        <a href="#"><%= locals.user.name %></a>
+        <img id="user-img" src="<%=user.avatar%>" alt="">
+        <%}else{%>
+            <a href="/users/sign-up">SIGNUP</a>
+            <a href="/users/sign-in">SIGNIN</a>
+        <%}%>
+    </div>
+</header>
